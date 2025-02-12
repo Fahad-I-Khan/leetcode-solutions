@@ -1,3 +1,37 @@
+### For problem 1 Two-Sum
+
+Add later 
+
+### For problem 53
+
+#### Example Walkthrough (nums = [-2,1,-3,4,-1,2,1,-5,4]):
+1. Initialize `maxSum = -2`, `currentSum = -2` (first element).
+- Iteration 1 (i = 1): `nums[1] = 1`
+  - `currentSum = max(1, -2 + 1) = max(1, -1) = 1`
+  - `maxSum = max(-2, 1) = 1`
+- Iteration 2 (i = 2): `nums[2] = -3`
+  - `currentSum = max(-3, 1 + (-3)) = max(-3, -2) = -2`
+  - `maxSum = max(1, -2) = 1`
+- Iteration 3 (i = 3): `nums[3] = 4`
+  - `currentSum = max(4, -2 + 4) = max(4, 2) = 4`
+  - `maxSum = max(1, 4) = 4`
+- Iteration 4 (i = 4): nums[4] = -1
+  - currentSum = max(-1, 4 + (-1)) = max(-1, 3) = 3
+  - maxSum = max(4, 3) = 4
+- Iteration 5 (i = 5): nums[5] = 2
+  - currentSum = max(2, 3 + 2) = max(2, 5) = 5
+  - maxSum = max(4, 5) = 5
+- Iteration 6 (i = 6): nums[6] = 1
+  - currentSum = max(1, 5 + 1) = max(1, 6) = 6
+  - maxSum = max(5, 6) = 6
+- Iteration 7 (i = 7): nums[7] = -5
+  - currentSum = max(-5, 6 + (-5)) = max(-5, 1) = 1
+  - maxSum = max(6, 1) = 6
+- Iteration 8 (i = 8): nums[8] = 4
+  - currentSum = max(4, 1 + 4) = max(4, 5) = 5
+  - maxSum = max(6, 5) = 6
+- After all iterations, the `maxSum` is `6`, which is the largest sum for the - subarray `[4, -1, 2, 1]`.
+
 ### For problem 3 Longest Substring Without Repeating Characters
 
 Let's walk through the algorithm with the string "abcbabcd" to determine the length of the longest substring without repeating characters.
