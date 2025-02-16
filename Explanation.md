@@ -2,7 +2,8 @@
 
 Add later 
 
-### For problem 53
+### For problem 53 Maximum Subarray
+Solving using Kadane's Algorithm.
 
 #### Example Walkthrough (nums = [-2,1,-3,4,-1,2,1,-5,4]):
 1. Initialize `maxSum = -2`, `currentSum = -2` (first element).
@@ -100,6 +101,108 @@ charIndexMap has 'b' at index 3, which is >= start.
 - Update charIndexMap to { 'a': 4, 'b': 5, 'c': 6, 'd': 7 }
 - currentLength = end - start + 1 = 7 - 4 + 1 = 4
 - maxLength is updated to 4
+
+
+### For Problem 152 
+
+#### Key Idea:
+We are trying to find the maximum product of any contiguous subarray in the array. The challenge arises because multiplying negative numbers can flip the sign of the product. So, it's essential to track both the **maximum** and **minimum** product up to the current index.
+
+#### Why Track `maxProd` and `minProd`?
+The reason we keep track of both `maxProd` (the maximum product so far) and `minProd` (the minimum product so far) is that a negative number can cause a small negative product (minProd) to turn into a larger positive product when multiplied. Similarly, the maximum product may decrease if we multiply by a negative number.
+
+For example:
+
+- In an array like `[2, 3, -2, 4]`, the negative number `-2` can turn a **small negative** product into a **large positive** product when multiplied by another negative number, making it necessary to track both the largest and smallest products.
+
+#### Explanation of `maxProd = max(nums[i], maxProd * nums[i])` and `minProd = min(nums[i], minProd * nums[i])`:
+1. `maxProd = max(nums[i], maxProd * nums[i])`:
+- `nums[i]`: This considers the case where we start a new subarray at index `i`. For example, when `nums[i]` is large or when the product up to the previous index is negative (we reset the subarray).
+- `maxProd * nums[i]`: This considers the case where we continue the subarray by multiplying the current element with the previous product. If the previous product was positive, it would likely increase the current product. If it was negative, the product might increase (if multiplied by a negative number).
+
+**Example**: Consider the array `[2, 3, -2, 4]`:
+
+- After processing `2` and `3`, the `maxProd` becomes `6` (from `2 * 3`).
+- But when we encounter `-2`, we might have two possibilities:
+  - `maxProd * (-2)` results in a **negative** value (not ideal for max).
+  - Start fresh with `nums[i] = -2` (this gives a potential smaller number that can later be turned into a positive product).
+2. `minProd = min(nums[i], minProd * nums[i])`:
+- `nums[i]`: This considers the case where we start a new subarray at index `i` with just the current element, which might be a negative number or a small value.
+- `minProd * nums[i]`: This considers the case where we extend the subarray by multiplying the current number with the previous minimum product. If the previous minimum product was negative, multiplying by a negative number could make it positive.
+
+**Example**: Continuing from the previous example, if the `minProd` at a certain point is `-6` and the next number is `-2`, multiplying `-6 * -2` would result in a positive number. So, the minimum value might be important because it could help flip negative results to positive ones.
+
+The following example is to understand when a grater number comes how the code perform iteration's in it.
+#### Step-by-Step Walkthrough of the Example `[2, 3, -2, 8, 4]`:
+Let's consider how this works for the array `[2, 3, -2, 8, 4]`:
+
+- **Initialization**:
+  - maxProd = 2 (initial value from nums[0])
+  - minProd = 2
+  - result = 2
+- **Iteration 1** (i = 1, nums[1] = 3):
+  - maxProd = max(3, 2 * 3) = 6
+  - minProd = min(3, 2 * 3) = 3
+  - result = max(2, 6) = 6
+- **Iteration 2** (i = 2, nums[2] = -2):
+  - maxProd = max(-2, 6 * -2) = 12 (flip to positive)
+  - minProd = min(-2, 3 * -2) = -6 (becomes negative)
+  - result = max(6, 12) = 12
+- **Iteration 3** (i = 3, nums[3] = 8):
+  - maxProd = max(8, 12 * 8) = 96
+  - minProd = min(8, -6 * 8) = -48
+  - result = max(12, 96) = 96
+- **Iteration 4** (i = 4, nums[4] = 4):
+  - maxProd = max(4, 96 * 4) = 384
+  - minProd = min(4, -48 * 4) = -192
+  - result = max(96, 384) = 384
+
+**Result**:
+At the end of the loop, `result` will be `384`, which is the maximum product of any contiguous subarray.
+
+The following example is to understand when two negative number are there how they will become positive.
+
+#### Example Array: `[2, -3, -2, 4]`
+
+- **Initialization**:
+  - maxProd = 2 (initial value from nums[0])
+  - minProd = 2
+  - result = 2
+- **Iteration 1** (i = 1, nums[1] = -3):
+
+**Handle negative number**:
+
+Since `nums[1] = -3` is negative, we swap `maxProd` and `minProd`:
+
+- `minProd = 2` (previous `maxProd`)
+- `maxProd = 2` (previous `minProd`)
+
+  - maxProd = max(-3, 2 * -3) = -6
+  - minProd = min(3, 2 * -3) = -3
+  - result = max(2, -6) = 2
+- **Iteration 2** (i = 2, nums[2] = -2):
+
+**Handle negative number**:
+
+Since `nums[1] = -2` is negative, we swap `maxProd` and `minProd`:
+
+- `minProd = -3` (previous `maxProd`)
+- `maxProd = -6` (previous `minProd`)
+
+  - maxProd = max(-2, -6 * -2) = 12 (flip to positive)
+  - minProd = min(-2, -3 * -2) = -6 (becomes negative)
+  - result = max(6, 12) = 12
+- **Iteration 3** (i = 3, nums[3] = 8):
+  - maxProd = max(4, 12 * 4) = 48
+  - minProd = min(4, -6 * 4) = -24
+  - result = max(12, 48) = 48
+
+**Result**:
+At the end of the loop, `result` will be `48`, which is the maximum product of any contiguous subarray.
+
+**Key Points**:
+- When a negative number appears, we swap the `maxProd` and `minProd` because multiplying a negative number with a negative product can turn it into a large positive product.
+- The final result is the `maximum product` that was encountered at any point in the array, which is `48` in this example.
 
 ### For problem 198 House Robber
 
