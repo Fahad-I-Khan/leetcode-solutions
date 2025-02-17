@@ -2,6 +2,8 @@
 
 Add later 
 
+---
+
 ### For problem 53 Maximum Subarray
 Solving using Kadane's Algorithm.
 
@@ -33,7 +35,107 @@ Solving using Kadane's Algorithm.
   - maxSum = max(6, 5) = 6
 - After all iterations, the `maxSum` is `6`, which is the largest sum for the - subarray `[4, -1, 2, 1]`.
 
+---
+
 ### For problem 3 Longest Substring Without Repeating Characters
+
+Sure! Let’s dive deeper into the part `maxLength = max(maxLength, i - start + 1)` and how this relates to the sliding window concept, along with the idea of expanding and contracting the window when characters are repeated.
+
+### **Sliding Window Concept:**
+
+In the context of this problem, **sliding window** means you are maintaining a "window" (subarray or substring) that contains unique characters as you move through the string. The window starts as a small substring and expands by moving the `i` pointer (the right boundary of the window) as you process each character in the string.
+
+When a character is repeated and already exists inside the window (i.e., inside the range `[start, i]`), you need to adjust the `start` pointer to shrink the window and remove the duplicate.
+
+### **Understanding `i - start + 1`:**
+
+1. **`i`** is the current index in the string, and `start` is the index of the beginning of the window.
+2. `i - start` gives you the length of the window, **excluding** the character at `start`.
+3. **Adding 1** accounts for the current character `i`, since the window is **inclusive** of both `start` and `i`.
+
+So, `i - start + 1` calculates the **current length of the window** that holds unique characters. 
+
+- **Why `+1`?**
+  - Think of `i - start` as the difference between the two pointer indices, but this difference gives you the length excluding the current character at index `i`. To get the **actual length of the window**, you need to include that current character, so you add `1`.
+
+### **Expanding the Window:**
+
+When you process each character, if it hasn’t been seen before (or is outside the current window), you **expand the window** by including that character.
+
+For example:
+- Let's say the substring currently under consideration is `"abc"` and `i = 2` (meaning you are at the third character of the string). The window length is `i - start + 1`, so for this substring, it will be `2 - 0 + 1 = 3`.
+
+In this case, `maxLength = max(maxLength, i - start + 1)` will be:
+- Initially, `maxLength = 0` (before we start processing).
+- After processing `"abc"`, `maxLength = max(0, 3)`, so `maxLength` becomes 3.
+
+This means we've updated the maximum length to be the length of this substring without repeating characters.
+
+### **Contracting the Window (When a Character is Repeated):**
+
+When you encounter a repeated character **within the current window**, you need to **shrink the window** from the left to make sure all characters in the window remain unique. This is where the `start` pointer comes into play.
+
+For example:
+- Let's say the current string is `"abcabcbb"`, and you're at the 4th character, `s[4] = 'a'`.
+- The character `'a'` was already seen at `start = 0`, so the window from `start = 0` to `i = 4` is invalid because it contains a repeated `'a'`.
+
+To make the window valid again, you move the `start` pointer to **just after** the last occurrence of `'a'` (which is index 1). So, `start` will move from 0 to 1, and now the window will be `"bca"`.
+
+The length of this valid window will now be `i - start + 1 = 4 - 1 + 1 = 4`. You continue this process until there are no duplicates in the window, and the `maxLength` is updated accordingly.
+
+### **Let’s Walk Through an Example:**
+
+Consider the input string `"abcabcbb"`.
+
+1. **First window (`start = 0`, `i = 0`)**:  
+   Window = `"a"`, length = `0 - 0 + 1 = 1`.  
+   `maxLength` = `max(0, 1) = 1`.
+
+2. **Second window (`start = 0`, `i = 1`)**:  
+   Window = `"ab"`, length = `1 - 0 + 1 = 2`.  
+   `maxLength` = `max(1, 2) = 2`.
+
+3. **Third window (`start = 0`, `i = 2`)**:  
+   Window = `"abc"`, length = `2 - 0 + 1 = 3`.  
+   `maxLength` = `max(2, 3) = 3`.
+
+4. **Fourth window (`start = 0`, `i = 3`)**:  
+   Window = `"abca"`, but since `'a'` is repeating (seen at index 0), we move `start` to `start = 1` (just after the last occurrence of `'a'`).  
+   Now the window = `"bca"`, length = `3 - 1 + 1 = 3`.  
+   `maxLength` remains `3`.
+
+5. **Fifth window (`start = 1`, `i = 4`)**:  
+   Window = `"bcab"`, but since `'b'` is repeating (seen at index 1), we move `start` to `start = 2` (just after the last occurrence of `'b'`).  
+   Now the window = `"cab"`, length = `4 - 2 + 1 = 3`.  
+   `maxLength` remains `3`.
+
+6. **Sixth window (`start = 2`, `i = 5`)**:  
+   Window = `"cabc"`, but since `'c'` is repeating (seen at index 2), we move `start` to `start = 3` (just after the last occurrence of `'c'`).  
+   Now the window = `"abc"`, length = `5 - 3 + 1 = 3`.  
+   `maxLength` remains `3`.
+
+7. **Seventh window (`start = 3`, `i = 6`)**:  
+   Window = `"abcb"`, but since `'b'` is repeating (seen at index 4), we move `start` to `start = 5` (just after the last occurrence of `'b'`).  
+   Now the window = `"cb"`, length = `6 - 5 + 1 = 2`.  
+   `maxLength` remains `3`.
+
+8. **Eighth window (`start = 5`, `i = 7`)**:  
+   Window = `"cbb"`, but since `'b'` is repeating (seen at index 6), we move `start` to `start = 7` (just after the last occurrence of `'b'`).  
+   Now the window = `"b"`, length = `7 - 7 + 1 = 1`.  
+   `maxLength` remains `3`.
+
+### **Key Points:**
+
+- **Expanding** the window means you keep extending the current substring by moving `i` forward and adding new unique characters.
+- **Contracting** the window happens when you encounter a duplicate character inside the window. You move `start` to the right, just after the last occurrence of the repeated character, to ensure the window only contains unique characters.
+- **`i - start + 1`** calculates the length of the current valid window.
+
+### **In summary**:
+- The **sliding window** allows you to dynamically manage the substring of unique characters.
+- **Expanding** the window happens when you add new characters.
+- **Contracting** happens when you remove duplicates by adjusting the `start` pointer.
+
+
 
 Let's walk through the algorithm with the string "abcbabcd" to determine the length of the longest substring without repeating characters.
 
@@ -102,6 +204,14 @@ charIndexMap has 'b' at index 3, which is >= start.
 - currentLength = end - start + 1 = 7 - 4 + 1 = 4
 - maxLength is updated to 4
 
+---
+
+### Problem 11 Container With Most Water
+
+Add later
+
+
+---
 
 ### For Problem 152 
 
@@ -204,6 +314,8 @@ At the end of the loop, `result` will be `48`, which is the maximum product of a
 - When a negative number appears, we swap the `maxProd` and `minProd` because multiplying a negative number with a negative product can turn it into a large positive product.
 - The final result is the `maximum product` that was encountered at any point in the array, which is `48` in this example.
 
+---
+
 ### For problem 198 House Robber
 
 Let’s walk through the example [1, 3, 2, 1]:
@@ -247,6 +359,8 @@ Let’s walk through the example [2, 3, 2]:
 - The maximum amount for this case is 3.
 #### Result:
 - The maximum amount considering both cases is max(3, 3) = 3.
+
+---
 
 ### Leetcode 33 Search in Rotated Sorted Array
 
@@ -299,6 +413,7 @@ Let’s walk through the example [2, 3, 2]:
 - The loop ends when left equals right (left = right = 3).
 - The minimum value is nums[left], which is 1.
 
+---
 
 ### Leetcode 15 3 Sum
 
@@ -331,6 +446,8 @@ Let’s walk through the example [2, 3, 2]:
 3. Final Result:
 - The unique triplets that sum up to zero are [-1, -1, 2] and [-1, 0, 1].
 
+---
+
 ### Leetcode 56 Merge Intervals
 
 #### Explanation with Example [[1, 3], [2, 6], [8, 10], [15, 18]]
@@ -349,6 +466,8 @@ Let’s walk through the example [2, 3, 2]:
 4. Result:
 - The merged intervals are [[1, 6], [8, 10], [15, 18]].
 
+---
+
 ### Leetcode 57 - Insert Interval
 **Input:**
 - Intervals: [[1, 3], [6, 9]]
@@ -366,6 +485,8 @@ Let’s walk through the example [2, 3, 2]:
 - Add the last currentInterval [6, 9] to the result.
 **Result:**
 - Merged Intervals: [[1, 5], [6, 9]]
+
+---
 
 ### Leetcode 435 - Non-overlapping Intervals
 
@@ -391,6 +512,8 @@ Let’s walk through the example [2, 3, 2]:
 
 **Result:**
 - The minimum number of intervals to remove is 1.
+
+---
 
 ### Leetcode 206 - 
 
@@ -462,6 +585,8 @@ head points to the node with value 3.
 - Since head is now nil, the loop terminates.
 - Print nil to indicate the end of the linked list.
 
+---
+
 ### Leetcode 141 - Linked List Cycle
 
 **Example 1: [3, 2, 0, -4], pos = 1**
@@ -485,6 +610,8 @@ List with cycle: 3 -> 2 -> 0 -> -4 -> 2 -> ...
 - - slow moves to 2
 - - fast moves to 2 (they meet)
 **Result:** Cycle detected (true).
+
+---
 
 ### Leetcode 19 - Remove Nth Node from End of List
 
@@ -585,6 +712,8 @@ arr := []int{1, 2, 3, 4, 5}
 1. Create the head node with value 1.
 2. Create subsequent nodes with values 2, 3, 4, and 5.
 3. Link these nodes together to form the list: 1 -> 2 -> 3 -> 4 -> 5.
+
+---
 
 ### Problem 54 - Spiral Matrix
 
@@ -687,6 +816,7 @@ The loop stops because top > bottom and left > right are no longer valid conditi
 **Final Output**
 The matrix elements in spiral order are: [1, 2, 3, 6, 9, 8, 7, 4, 5].
 
+---
 
 ### Leetcode 242 - Valid Anagram
 
