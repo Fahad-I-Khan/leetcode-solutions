@@ -4,39 +4,6 @@ Add later
 
 ---
 
-### For problem 53 Maximum Subarray
-Solving using Kadane's Algorithm.
-
-#### Example Walkthrough (nums = [-2,1,-3,4,-1,2,1,-5,4]):
-1. Initialize `maxSum = -2`, `currentSum = -2` (first element).
-- Iteration 1 (i = 1): `nums[1] = 1`
-  - `currentSum = max(1, -2 + 1) = max(1, -1) = 1`
-  - `maxSum = max(-2, 1) = 1`
-- Iteration 2 (i = 2): `nums[2] = -3`
-  - `currentSum = max(-3, 1 + (-3)) = max(-3, -2) = -2`
-  - `maxSum = max(1, -2) = 1`
-- Iteration 3 (i = 3): `nums[3] = 4`
-  - `currentSum = max(4, -2 + 4) = max(4, 2) = 4`
-  - `maxSum = max(1, 4) = 4`
-- Iteration 4 (i = 4): nums[4] = -1
-  - currentSum = max(-1, 4 + (-1)) = max(-1, 3) = 3
-  - maxSum = max(4, 3) = 4
-- Iteration 5 (i = 5): nums[5] = 2
-  - currentSum = max(2, 3 + 2) = max(2, 5) = 5
-  - maxSum = max(4, 5) = 5
-- Iteration 6 (i = 6): nums[6] = 1
-  - currentSum = max(1, 5 + 1) = max(1, 6) = 6
-  - maxSum = max(5, 6) = 6
-- Iteration 7 (i = 7): nums[7] = -5
-  - currentSum = max(-5, 6 + (-5)) = max(-5, 1) = 1
-  - maxSum = max(6, 1) = 6
-- Iteration 8 (i = 8): nums[8] = 4
-  - currentSum = max(4, 1 + 4) = max(4, 5) = 5
-  - maxSum = max(6, 5) = 6
-- After all iterations, the `maxSum` is `6`, which is the largest sum for the - subarray `[4, -1, 2, 1]`.
-
----
-
 ### For problem 3 Longest Substring Without Repeating Characters
 
 Sure! Let’s dive deeper into the part `maxLength = max(maxLength, i - start + 1)` and how this relates to the sliding window concept, along with the idea of expanding and contracting the window when characters are repeated.
@@ -210,6 +177,39 @@ charIndexMap has 'b' at index 3, which is >= start.
 
 Add later
 
+
+---
+
+### For problem 53 Maximum Subarray
+Solving using Kadane's Algorithm.
+
+#### Example Walkthrough (nums = [-2,1,-3,4,-1,2,1,-5,4]):
+1. Initialize `maxSum = -2`, `currentSum = -2` (first element).
+- Iteration 1 (i = 1): `nums[1] = 1`
+  - `currentSum = max(1, -2 + 1) = max(1, -1) = 1`
+  - `maxSum = max(-2, 1) = 1`
+- Iteration 2 (i = 2): `nums[2] = -3`
+  - `currentSum = max(-3, 1 + (-3)) = max(-3, -2) = -2`
+  - `maxSum = max(1, -2) = 1`
+- Iteration 3 (i = 3): `nums[3] = 4`
+  - `currentSum = max(4, -2 + 4) = max(4, 2) = 4`
+  - `maxSum = max(1, 4) = 4`
+- Iteration 4 (i = 4): nums[4] = -1
+  - currentSum = max(-1, 4 + (-1)) = max(-1, 3) = 3
+  - maxSum = max(4, 3) = 4
+- Iteration 5 (i = 5): nums[5] = 2
+  - currentSum = max(2, 3 + 2) = max(2, 5) = 5
+  - maxSum = max(4, 5) = 5
+- Iteration 6 (i = 6): nums[6] = 1
+  - currentSum = max(1, 5 + 1) = max(1, 6) = 6
+  - maxSum = max(5, 6) = 6
+- Iteration 7 (i = 7): nums[7] = -5
+  - currentSum = max(-5, 6 + (-5)) = max(-5, 1) = 1
+  - maxSum = max(6, 1) = 6
+- Iteration 8 (i = 8): nums[8] = 4
+  - currentSum = max(4, 1 + 4) = max(4, 5) = 5
+  - maxSum = max(6, 5) = 6
+- After all iterations, the `maxSum` is `6`, which is the largest sum for the - subarray `[4, -1, 2, 1]`.
 
 ---
 
@@ -485,6 +485,59 @@ Let’s walk through the example [2, 3, 2]:
 - Add the last currentInterval [6, 9] to the result.
 **Result:**
 - Merged Intervals: [[1, 5], [6, 9]]
+
+---
+
+### For Problem 424 - Longest Repeating Character Replacement
+
+I understand your confusion. Let's break it down and walk through the example in more detail. I'll explain the working of the sliding window, `charCount[s[right]]++`, how `maxFreq` works, and why we need `windowSize`.
+
+---
+
+### Goal:
+We want to find the **longest substring** that can be obtained by replacing **at most `k` characters** to make all characters in that substring identical. We will use a sliding window approach to efficiently solve this problem.
+
+### Key Variables:
+1. **`charCount`:** A map to keep track of the frequency of characters in the current window.
+2. **`maxFreq`:** The maximum frequency of a character in the current window. We use this to check if the window is valid (if we need to shrink it).
+3. **`windowSize`:** This is the current size of the window, which is calculated as `right - left + 1`.
+4. **`maxLength`:** The longest valid window (substring) found so far.
+
+---
+
+### How `charCount[s[right]]++` Works:
+Whenever we encounter a character at index `right` (the right boundary of our window), we increase its count in the `charCount` map. This helps us keep track of the frequency of characters in the current window.
+
+For example, if we encounter `'A'` at index `right = 0`, it will update the count in `charCount`.
+
+---
+
+### Why `maxFreq` is Important:
+`maxFreq` tracks the frequency of the most frequent character in the current window. We need to track this because, to make a substring of all identical characters by replacing at most `k` characters, we need to know how many characters in the current window are already the same as the most frequent character.
+
+If the **current window size (`right - left + 1`)** minus `maxFreq` is **greater than `k`**, it means we have more than `k` characters that are different from the most frequent character. In this case, we must shrink the window by moving the `left` pointer to the right to make it valid again.
+
+---
+
+### Why We Need to Calculate `windowSize`:
+`windowSize` is simply the number of characters in the current window, i.e., `right - left + 1`. This helps us determine how many characters we have in the window and whether it's valid or not.
+
+For the window to be valid (i.e., we can replace at most `k` characters to make the substring uniform), the number of characters to be replaced should be less than or equal to `k`. The number of characters to be replaced is:
+```
+windowSize - maxFreq
+```
+If this value is **greater than `k`**, we shrink the window from the left.
+
+---
+
+### Conclusion:
+- **How `charCount[s[right]]++` works**: This keeps track of the frequency of characters in the current window, helping to determine the most frequent character (`maxFreq`).
+- **Why `maxFreq` helps**: It allows us to know the number of characters we need to replace. If the characters to replace exceed `k`, we shrink the window.
+- **Why `windowSize` is important**: It helps us determine if the current window is valid. If the number of characters to replace exceeds `k`, we shrink the window.
+
+The sliding window adjusts based on the need to maintain a valid window while iterating through the string.
+
+Let me know if anything is unclear!
 
 ---
 
