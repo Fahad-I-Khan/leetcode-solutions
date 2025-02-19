@@ -35,3 +35,67 @@ func main() {
     t := "nagaram"
     fmt.Println(isAnagram(s, t)) // Output: true
 }
+
+// My way to solve 
+
+// func isAnagram(s string, t string) bool {
+    
+//     if len(t) != len(s) {
+//         return false
+//     }
+//     // Frequency map for t
+//     tFreq := make(map[byte]int)
+//     for i := 0; i < len(t); i++ {
+//         tFreq[t[i]]++
+//     }
+
+//     right := 0
+
+//     for right < len(s) {
+//         currentChar := s[right]
+//         if tFreq[currentChar] > 0 {
+//             tFreq[currentChar]--
+//         } else {
+//             return false
+//         }
+//         right++
+        
+//     }
+
+//     for _, count := range tFreq {
+//         if count > 0 {
+//             return false
+//         }
+//     }
+//     return true
+// }
+
+
+
+// Solution from ChatGPT
+
+// func isAnagram(s string, t string) bool {
+//     // If lengths differ, they cannot be anagrams
+//     if len(s) != len(t) {
+//         return false
+//     }
+
+//     // Create a map to count the frequency of characters in string s
+//     charCount := make(map[byte]int)
+
+//     // Traverse both strings and update frequencies
+//     for i := 0; i < len(s); i++ {
+//         charCount[s[i]]++
+//         charCount[t[i]]--
+//     }
+
+//     // Check if all counts are zero
+//     for _, count := range charCount {
+//         if count != 0 {
+//             return false
+//         }
+//     }
+
+//     return true
+// }
+

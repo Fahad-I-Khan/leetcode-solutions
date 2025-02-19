@@ -666,105 +666,6 @@ This technique efficiently counts the characters and keeps track of the most fre
 
 ---
 
-### Leetcode 435 - Non-overlapping Intervals
-
-**Input:**
-- Intervals: [[1, 2], [2, 3], [3, 4], [1, 3]]
-
-**Steps:**
-1. Sort Intervals by End Time:
-- The intervals sorted by end times are [[1, 2], [2, 3], [1, 3], [3, 4]].
-2. Iterate and Select Non-Overlapping Intervals:
-- Initialize count as 1 (select the first interval [1, 2]).
-- Set end to 2 (end time of the first interval).
-- Compare the next interval [2, 3]:
-- - Start of [2, 3] is equal to end, so it overlaps but can be included. Update end to 3 and increment count.
-- Compare the next interval [1, 3]:
-- - Start of [1, 3] is less than end (3), so it overlaps. Skip this interval.
-- Compare the last interval [3, 4]:
-- - Start of [3, 4] is equal to end, so it can be included. Update end to 4 and increment count.
-3. Calculate the Number of Intervals to Remove:
-- Total number of intervals is 4.
-- Number of non-overlapping intervals is 3 ([[1, 2], [2, 3], [3, 4]]).
-- Number of intervals to remove is 4 - 3 = 1.
-
-**Result:**
-- The minimum number of intervals to remove is 1.
-
----
-
-### Leetcode 206 - 
-
-**Input Linked List:**
-
-- 1 -> 2 -> 3 -> 4 -> nil
-**Steps:**
-
-1. **Initialization:**
-- prev = nil
-- current = 1 -> 2 -> 3 -> 4 -> nil
-2. **Iteration and Reversal:**
-- **First Iteration:**
-- - next = 2 -> 3 -> 4 -> nil
-- - current.Next = nil (reversed pointer)
-- - Move prev to 1 -> nil
-- - Move current to 2 -> 3 -> 4 -> nil
-- **Second Iteration:**
-- - next = 3 -> 4 -> nil
-- - current.Next = 1 -> nil
-- - Move prev to 2 -> 1 -> nil
-- - Move current to 3 -> 4 -> nil
-- **Third Iteration:**
-- - next = 4 -> nil
-- - current.Next = 2 -> 1 -> nil
-- - Move prev to 3 -> 2 -> 1 -> nil
-- - Move current to 4 -> nil
-- **Fourth Iteration:**
-- - next = nil
-- - current.Next = 3 -> 2 -> 1 -> nil
-- - Move prev to 4 -> 3 -> 2 -> 1 -> nil
-- - Move current to nil
-3. **Completion:**
-- The prev pointer now points to the new head of the reversed list: 4 -> 3 -> 2 -> 1 -> nil.
-
-```
-func printList(head *ListNode) {
-    for head != nil {
-        fmt.Print(head.Val, " -> ")
-        head = head.Next
-    }
-    fmt.Println("nil")
-}
-```
-
-1. **Initial Call:**
-go
-Copy code
-```
-printList(head) // head points to the node with value 1
-```
-2. **First Iteration:**
-- head points to the node with value 1.
-- Print 1 ->.
-- Move head to the node with value 2.
-3. **Second Iteration:**
-- head points to the node with value 2.
-- Print 2 ->.
-- Move head to the node with value 3.
-4. **Third Iteration:**
-head points to the node with value 3.
-- Print 3 ->.
-- Move head to the node with value 4.
-5. **Fourth Iteration:**
-- head points to the node with value 4.
-- Print 4 ->.
-- Move head to nil (end of the list).
-6. **End of the List:**
-- Since head is now nil, the loop terminates.
-- Print nil to indicate the end of the linked list.
-
----
-
 ### Leetcode 141 - Linked List Cycle
 
 **Example 1: [3, 2, 0, -4], pos = 1**
@@ -996,6 +897,79 @@ The matrix elements in spiral order are: [1, 2, 3, 6, 9, 8, 7, 4, 5].
 
 ---
 
+
+### Leetcode 206 - 
+
+**Input Linked List:**
+
+- 1 -> 2 -> 3 -> 4 -> nil
+**Steps:**
+
+1. **Initialization:**
+- prev = nil
+- current = 1 -> 2 -> 3 -> 4 -> nil
+2. **Iteration and Reversal:**
+- **First Iteration:**
+- - next = 2 -> 3 -> 4 -> nil
+- - current.Next = nil (reversed pointer)
+- - Move prev to 1 -> nil
+- - Move current to 2 -> 3 -> 4 -> nil
+- **Second Iteration:**
+- - next = 3 -> 4 -> nil
+- - current.Next = 1 -> nil
+- - Move prev to 2 -> 1 -> nil
+- - Move current to 3 -> 4 -> nil
+- **Third Iteration:**
+- - next = 4 -> nil
+- - current.Next = 2 -> 1 -> nil
+- - Move prev to 3 -> 2 -> 1 -> nil
+- - Move current to 4 -> nil
+- **Fourth Iteration:**
+- - next = nil
+- - current.Next = 3 -> 2 -> 1 -> nil
+- - Move prev to 4 -> 3 -> 2 -> 1 -> nil
+- - Move current to nil
+3. **Completion:**
+- The prev pointer now points to the new head of the reversed list: 4 -> 3 -> 2 -> 1 -> nil.
+
+```
+func printList(head *ListNode) {
+    for head != nil {
+        fmt.Print(head.Val, " -> ")
+        head = head.Next
+    }
+    fmt.Println("nil")
+}
+```
+
+1. **Initial Call:**
+go
+Copy code
+```
+printList(head) // head points to the node with value 1
+```
+2. **First Iteration:**
+- head points to the node with value 1.
+- Print 1 ->.
+- Move head to the node with value 2.
+3. **Second Iteration:**
+- head points to the node with value 2.
+- Print 2 ->.
+- Move head to the node with value 3.
+4. **Third Iteration:**
+head points to the node with value 3.
+- Print 3 ->.
+- Move head to the node with value 4.
+5. **Fourth Iteration:**
+- head points to the node with value 4.
+- Print 4 ->.
+- Move head to nil (end of the list).
+6. **End of the List:**
+- Since head is now nil, the loop terminates.
+- Print nil to indicate the end of the linked list.
+
+---
+
 ### Leetcode 242 - Valid Anagram
 
 ```
@@ -1025,3 +999,129 @@ for _, char := range t {
 - - freq['n'] was 1, now becomes 0
 - - freq = {'a': 3, 'n': 0, 'g': 1, 'r': 1, 'm': 1}
 
+---
+
+Yes, you are absolutely right in pointing out that we are comparing `sFreq[key]` with the value from `tFreq`, not directly checking `tFreq['a']`. Let me clarify the logic more clearly.
+
+### What We Are Doing:
+In the loop:
+
+```go
+for key, value := range tFreq {
+    if sFreq[key] != value {
+        return false
+    }
+}
+```
+
+Here, the `key` represents the character, and the `value` represents the frequency of that character in the `t` string (`tFreq` map). We are checking if the **frequency of the character in `sFreq` is the same as the frequency of the same character in `tFreq`**.
+
+### Breakdown:
+- `key`: This is a character from `tFreq` (e.g., `'a'`, `'b'`, etc.).
+- `value`: This is the frequency of that character in string `t`.
+- `sFreq[key]`: This is the frequency of that **same character** in string `s`.
+
+---
+
+Certainly! Let's break down and visualize the part where you are updating the counts for the characters in both strings `s` and `t`:
+
+### Code:
+```go
+for i := 0; i < len(s); i++ {
+    charCount[s[i]]++  // Increment the count for the character in s
+    charCount[t[i]]--  // Decrement the count for the character in t
+}
+
+// Check if all counts are zero
+for _, count := range charCount {
+    if count != 0 {
+        return false  // If any count is not zero, return false
+    }
+}
+```
+
+
+
+### Explanation For ChatGPT Solution:
+
+- **`charCount[s[i]]++`**: For each character in `s`, you increment the corresponding count in the map `charCount`.
+- **`charCount[t[i]]--`**: For each character in `t`, you decrement the corresponding count in the map `charCount`.
+- **Goal**: After processing both strings `s` and `t`, if `s` is an anagram of `t`, all counts should be zero. If they are not, it means the two strings do not have the same characters and frequencies, so the function returns `false`.
+
+### Visualization:
+
+Let's take an example to walk through it:  
+- `s = "aabbcc"`  
+- `t = "abcbac"`
+
+### Initial Setup:
+
+- Create a map `charCount` to track the character counts.
+
+```go
+charCount := make(map[byte]int)
+```
+
+At the start, `charCount` is empty.
+
+### Iteration 1: i = 0 (First characters of `s` and `t`)
+- `s[0] = 'a'`, `t[0] = 'a'`
+- We do the following:
+  - `charCount['a']++`: `charCount['a']` becomes 1.
+  - `charCount['a']--`: `charCount['a']` becomes 0.
+
+So, after the first iteration, `charCount` looks like:
+```go
+charCount = {'a': 0}
+```
+
+### Iteration 2: i = 1 (Second characters of `s` and `t`)
+- `s[1] = 'a'`, `t[1] = 'b'`
+- We do the following:
+  - `charCount['a']++`: `charCount['a']` becomes 1.
+  - `charCount['b']--`: `charCount['b']` becomes -1.
+
+So, after the second iteration, `charCount` looks like:
+```go
+charCount = {'a': 1, 'b': -1}
+```
+
+### Iteration 3: i = 2 (Third characters of `s` and `t`)
+- `s[2] = 'b'`, `t[2] = 'c'`
+- We do the following:
+  - `charCount['b']++`: `charCount['b']` becomes 0.
+  - `charCount['c']--`: `charCount['c']` becomes -1.
+
+So, after the third iteration, `charCount` looks like:
+```go
+charCount = {'a': 1, 'b': 0, 'c': -1}
+```
+
+---
+
+### Leetcode 435 - Non-overlapping Intervals
+
+**Input:**
+- Intervals: [[1, 2], [2, 3], [3, 4], [1, 3]]
+
+**Steps:**
+1. Sort Intervals by End Time:
+- The intervals sorted by end times are [[1, 2], [2, 3], [1, 3], [3, 4]].
+2. Iterate and Select Non-Overlapping Intervals:
+- Initialize count as 1 (select the first interval [1, 2]).
+- Set end to 2 (end time of the first interval).
+- Compare the next interval [2, 3]:
+- - Start of [2, 3] is equal to end, so it overlaps but can be included. Update end to 3 and increment count.
+- Compare the next interval [1, 3]:
+- - Start of [1, 3] is less than end (3), so it overlaps. Skip this interval.
+- Compare the last interval [3, 4]:
+- - Start of [3, 4] is equal to end, so it can be included. Update end to 4 and increment count.
+3. Calculate the Number of Intervals to Remove:
+- Total number of intervals is 4.
+- Number of non-overlapping intervals is 3 ([[1, 2], [2, 3], [3, 4]]).
+- Number of intervals to remove is 4 - 3 = 1.
+
+**Result:**
+- The minimum number of intervals to remove is 1.
+
+---
