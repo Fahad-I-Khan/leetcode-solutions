@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func longestPalindrome(s string) string {
     if len(s) == 0 {
         return ""
@@ -7,13 +9,8 @@ func longestPalindrome(s string) string {
     start, end := 0, 0 
     for i := 0; i < len(s); i++ {
         len1, len2 := 0, 0 
-        // Only check the even-length center if string length is even
-        if len(s)%2 == 0 {
-            len1 = expandAroundCenter(s, i, i+1)  // Even-length palindrome
-        } else {
-            len1 = expandAroundCenter(s, i, i)    // Odd-length palindrome
-            len2 = expandAroundCenter(s, i, i+1)  // Even-length palindrome
-        }
+        len1 = expandAroundCenter(s, i, i)    // Odd-length palindrome
+        len2 = expandAroundCenter(s, i, i+1) 
 
         // Get the maximum length palindrome found
         maxLen := max(len1, len2)
@@ -34,3 +31,25 @@ func expandAroundCenter(s string, left, right int) int {
     }
     return right - left - 1
 }
+
+func main()  {
+    s := "abccba"
+    fmt.Printf("The longest string: %s", longestPalindrome(s))
+}
+
+// func main() {
+//     // Test cases
+//     testStrings := []string{
+//         "babad",
+//         "cbbd",
+//         "racecar",
+//         "abccba",
+//         "",
+//         "a",
+//     }
+
+//     // Print the result for each test case
+//     for _, str := range testStrings {
+//         fmt.Printf("Longest palindrome in \"%s\": \"%s\"\n", str, longestPalindrome(str))
+//     }
+// }
