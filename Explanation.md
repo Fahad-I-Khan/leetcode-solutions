@@ -173,6 +173,114 @@ charIndexMap has 'b' at index 3, which is >= start.
 
 ---
 
+### For Problem 5 Longest Palindromic Substring
+
+Certainly! Let's dive into the **3rd iteration** (`i = 3`) and carefully see how the **expandAroundCenter** works, how the `maxLen` is calculated, and how the `start` and `end` are updated.
+
+We are working with the string `s = "racecar"`, and we're currently at the **3rd iteration** (where `i = 3`), which corresponds to the character `'e'`.
+
+### Step 1: Odd-Length Palindrome Expansion
+
+We start by trying to expand around the center `i = 3` for the **odd-length palindrome** (centered at `'e'`).
+
+So we call the helper function:
+```go
+len1 = expandAroundCenter(s, 3, 3)
+```
+- The initial `left = 3` and `right = 3`, both pointing to the character `'e'`.
+
+Now let's start expanding:
+
+1. **First expansion**: `s[3] == s[3]` (both `'e'`), so we expand:
+   - Now `left = 2` and `right = 4`.
+
+2. **Second expansion**: `s[2] == s[4]` (both `'c'`), so we expand again:
+   - Now `left = 1` and `right = 5`.
+
+3. **Third expansion**: `s[1] == s[5]` (both `'a'`), so we expand again:
+   - Now `left = 0` and `right = 6`.
+
+4. **Fourth expansion**: `s[0] == s[6]` (both `'r'`), so we expand again:
+   - Now `left = -1` and `right = 7`.
+
+At this point, `left = -1`, which is out of bounds, so we stop expanding.
+
+The palindrome is `"racecar"`, and its length is `right - left - 1 = 7 - (-1) - 1 = 7`.
+
+Thus, **`len1 = 7`** for the odd-length palindrome.
+
+---
+
+### Step 2: Even-Length Palindrome Expansion
+
+Now we try to expand around the center `(i = 3, i + 1 = 4)` for the **even-length palindrome** (centered between `'e'` and `'c'`).
+
+We call the helper function:
+```go
+len2 = expandAroundCenter(s, 3, 4)
+```
+- The initial `left = 3` and `right = 4`, pointing to the characters `'e'` and `'c'`.
+
+Let's start expanding:
+
+1. **First expansion**: `s[3] != s[4]` (i.e., `'e'` and `'c'`), so the expansion stops immediately.
+
+The palindrome length is `0`.
+
+Thus, **`len2 = 0`** for the even-length palindrome.
+
+---
+
+### Step 3: Calculate the Maximum Length
+
+Now that we have both palindrome lengths:
+- `len1 = 7` (from the odd-length palindrome).
+- `len2 = 0` (from the even-length palindrome).
+
+We calculate the maximum length:
+```go
+maxLen := max(len1, len2) // max(7, 0) = 7
+```
+
+So, **`maxLen = 7`**.
+
+---
+
+### Step 4: Update `start` and `end`
+
+Now we compare `maxLen` with the current length of the palindrome (`end - start`), which is `end - start = 0 - 0 = 0` at the beginning of the loop.
+
+Since `maxLen = 7` is greater than `end - start = 0`, we need to update the `start` and `end` indices to reflect the new palindrome.
+
+We calculate the new values for `start` and `end`:
+
+- `start = i - (maxLen - 1) / 2 = 3 - (7 - 1) / 2 = 3 - 3 = 0`
+- `end = i + maxLen / 2 = 3 + 7 / 2 = 3 + 3 = 6`
+
+So the new values are:
+- **`start = 0`**
+- **`end = 6`**
+
+This means the longest palindrome found so far is from index `0` to index `6`, which corresponds to the substring `"racecar"`.
+
+---
+
+### Step 5: Return the Longest Palindromic Substring
+
+After the loop finishes, we return the substring from `start` to `end + 1`:
+```go
+return s[start:end+1]
+```
+With `start = 0` and `end = 6`, this returns:
+```go
+s[0:7]  // "racecar"
+```
+
+### Final Answer:
+The longest palindromic substring is `"racecar"`. This is the correct output, which the function will return.
+
+---
+
 ### Problem 11 Container With Most Water
 
 Add later
@@ -794,6 +902,41 @@ arr := []int{1, 2, 3, 4, 5}
 
 ---
 
+### For Pronlem 20:
+
+#### A More General Example:
+
+Let’s say we push some elements into the stack:
+
+- Initially, `stack = []`
+- Push `'A'`, then `'B'`, then `'C'`.
+
+After pushing these, the stack will look like this:
+
+```
+stack = ['A', 'B', 'C']
+len(stack) = 3
+```
+
+Now, if we want to access the top element of the stack (i.e., `'C'`), we do:
+
+```
+stack[len(stack)-1]  // This gives us 'C' (the top of the stack)
+```
+
+To **pop** the stack (remove `'C'`), we do:
+
+```
+stack = stack[:len(stack)-1]  // Now the stack becomes ['A', 'B']
+```
+
+### Summary:
+
+- **`stack[len(stack)-1]`** is how we access the **top element** of the stack.
+- **`stack[:len(stack)-1]`** is used to **remove** the top element from the stack.
+
+---
+
 ### Problem 54 - Spiral Matrix
 
 1. Initialize Boundaries and Result List
@@ -1125,3 +1268,44 @@ charCount = {'a': 1, 'b': 0, 'c': -1}
 - The minimum number of intervals to remove is 1.
 
 ---
+
+### Problem 647 - Palindromic Substrings
+
+### **Explanation:**
+1. **`expandAroundCenter(left, right)`**:
+   - This function tries to expand outward from the `left` and `right` indices while the characters are the same, counting how many palindromes it can find during the expansion.
+   - If characters at `left` and `right` are the same, it’s a palindrome. The function continues expanding outward as long as the characters at the `left` and `right` indices match.
+   
+2. **Main logic**:
+   - Loop through each character of the string `s` using the index `i`.
+   - For each character `i`, consider both:
+     - Odd-length palindromes (where the center is at `i`), by calling `expandAroundCenter(i, i)`.
+     - Even-length palindromes (where the center is between `i` and `i+1`), by calling `expandAroundCenter(i, i+1)`.
+   - For each palindrome found during expansion, increment the `count`.
+
+3. **Final result**:
+   - The total number of palindromic substrings is stored in the `count` variable, which is returned at the end.
+
+
+---
+
+### **Example Walkthrough:**
+
+Let's consider an example: `s = "aaa"`
+
+1. **First iteration (i = 0)**:
+   - Odd-length palindrome: expand around index `0`, we find `"a"`.
+   - Even-length palindrome: expand around indices `0` and `1`, we find `"aa"`.
+
+2. **Second iteration (i = 1)**:
+   - Odd-length palindrome: expand around index `1`, we find `"a"`, and then `"aaa"`.
+   - Even-length palindrome: expand around indices `1` and `2`, we find `"aa"`.
+
+3. **Third iteration (i = 2)**:
+   - Odd-length palindrome: expand around index `2`, we find `"a"`.
+   - Even-length palindrome: no valid even-length palindrome found at this center.
+
+Thus, we have found 6 palindromic substrings: `"a"`, `"a"`, `"a"`, `"aa"`, `"aa"`, and `"aaa"`. The count is `6`.
+
+---
+
