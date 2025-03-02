@@ -179,7 +179,7 @@ Certainly! Let's dive into the **3rd iteration** (`i = 3`) and carefully see how
 
 We are working with the string `s = "racecar"`, and we're currently at the **3rd iteration** (where `i = 3`), which corresponds to the character `'e'`.
 
-### Step 1: Odd-Length Palindrome Expansion
+#### Step 1: Odd-Length Palindrome Expansion
 
 We start by trying to expand around the center `i = 3` for the **odd-length palindrome** (centered at `'e'`).
 
@@ -211,7 +211,7 @@ Thus, **`len1 = 7`** for the odd-length palindrome.
 
 ---
 
-### Step 2: Even-Length Palindrome Expansion
+#### Step 2: Even-Length Palindrome Expansion
 
 Now we try to expand around the center `(i = 3, i + 1 = 4)` for the **even-length palindrome** (centered between `'e'` and `'c'`).
 
@@ -231,7 +231,7 @@ Thus, **`len2 = 0`** for the even-length palindrome.
 
 ---
 
-### Step 3: Calculate the Maximum Length
+#### Step 3: Calculate the Maximum Length
 
 Now that we have both palindrome lengths:
 - `len1 = 7` (from the odd-length palindrome).
@@ -246,7 +246,7 @@ So, **`maxLen = 7`**.
 
 ---
 
-### Step 4: Update `start` and `end`
+#### Step 4: Update `start` and `end`
 
 Now we compare `maxLen` with the current length of the palindrome (`end - start`), which is `end - start = 0 - 0 = 0` at the beginning of the loop.
 
@@ -265,7 +265,7 @@ This means the longest palindrome found so far is from index `0` to index `6`, w
 
 ---
 
-### Step 5: Return the Longest Palindromic Substring
+#### Step 5: Return the Longest Palindromic Substring
 
 After the loop finishes, we return the substring from `start` to `end + 1`:
 ```go
@@ -276,7 +276,7 @@ With `start = 0` and `end = 6`, this returns:
 s[0:7]  // "racecar"
 ```
 
-### Final Answer:
+#### Final Answer:
 The longest palindromic substring is `"racecar"`. This is the correct output, which the function will return.
 
 ---
@@ -285,6 +285,33 @@ The longest palindromic substring is `"racecar"`. This is the correct output, wh
 
 Add later
 
+
+---
+
+### Problem 13 Roman to Integer
+
+If you're dealing with a string that contains Roman numerals, but their integer values are not explicitly provided, you can write a function to map the Roman numeral characters to their corresponding integer values and then calculate the integer value from the string of Roman numerals.
+
+#### Approach:
+1. First, create a map that associates Roman numeral symbols (`I`, `V`, `X`, etc.) with their integer values.
+2. Iterate through the string of Roman numerals.
+3. For each Roman numeral character, check its value and determine whether it should be added or subtracted based on the Roman numeral rules.
+
+
+#### Explanation:
+- The `romanToIntMap` is a map that associates each Roman numeral character (`rune`) with its corresponding integer value.
+- The `romanToInt` function takes a Roman numeral string and converts it to an integer.
+- The loop iterates through each character in the Roman numeral string. For each character, it checks if the next character has a higher value (meaning it should be subtracted) or a lower/equal value (meaning it should be added).
+- If a numeral is followed by one of a larger value (e.g., `I` before `V` or `X`), it subtracts the current value. Otherwise, it adds the current value.
+
+#### Example Runs:
+- `"IX"` → `9` (since `I` is before `X`, it’s `10 - 1`)
+- `"MCMXCIV"` → `1994` (because `M = 1000`, `CM = 900`, `XC = 90`, and `IV = 4`)
+
+#### How to Use:
+If you receive a string with Roman numerals (such as `"IV"` or `"XVI"`), simply pass that string to the `romanToInt` function, and it will return the corresponding integer value.
+
+Let me know if you need further clarification or adjustments!
 
 ---
 
