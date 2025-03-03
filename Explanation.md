@@ -281,6 +281,21 @@ The longest palindromic substring is `"racecar"`. This is the correct output, wh
 
 ---
 
+### Problem 9 Palindrome Number
+
+```go
+func isPalindrome(n int) bool {
+	strNum := strconv.Itoa(n)  // Convert int to string
+	reversed := ""
+	for i := len(strNum) - 1; i >= 0; i-- {
+		reversed += string(strNum[i])  // Reverse the string
+	}
+	return strNum == reversed  // Check if original string equals reversed string
+}
+```
+
+From above func we learn how to reverse a string. 
+
 ### Problem 11 Container With Most Water
 
 Add later
