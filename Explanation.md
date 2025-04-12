@@ -363,6 +363,77 @@ Solving using Kadane's Algorithm.
 
 ---
 
+
+### ✅ LeetCode 136 – **Go Solution**
+
+```go
+func singleNumber(nums []int) int {
+    result := 0
+    for _, num := range nums {
+        result ^= num
+    }
+    return result
+}
+```
+
+---
+
+### ✍️ How It Works – Step-by-Step (Tracing with `[4, 1, 2, 1, 2]`)
+
+We initialize:
+```
+result := 0
+```
+
+We loop through each number in the array and XOR it with `result`.
+
+| Step | num | result (before) | result ^ num | result (after) |
+|------|-----|------------------|---------------|-----------------|
+| 1    | 4   | 0                | 0 ^ 4 = 4     | 4               |
+| 2    | 1   | 4                | 4 ^ 1 = 5     | 5               |
+| 3    | 2   | 5                | 5 ^ 2 = 7     | 7               |
+| 4    | 1   | 7                | 7 ^ 1 = 6     | 6               |
+| 5    | 2   | 6                | 6 ^ 2 = 4     | 4               |
+
+Final value of `result` = `4` → that’s the number that doesn’t repeat.
+
+---
+
+### ⚙️ Why XOR works again:
+
+- Pairs cancel each other:  
+  `1 ^ 1 = 0`, `2 ^ 2 = 0`
+- And `0 ^ 4 = 4` → the single number
+
+
+---
+
+### Leetcode 141 - Linked List Cycle
+
+**Example 1: [3, 2, 0, -4], pos = 1**
+
+1. **Create the List:**
+- Nodes: 3 -> 2 -> 0 -> -4
+- Create a cycle where -4 points back to 2 (position 1).
+List with cycle: 3 -> 2 -> 0 -> -4 -> 2 -> ...
+2. **Apply Floyd’s Algorithm:**
+- slow starts at 3, fast starts at 3.
+- After first iteration:
+- - slow moves to 2
+- - fast moves to 0
+- After second iteration:
+- - slow moves to 0
+- - fast moves to -4
+- After third iteration:
+- - slow moves to -4
+- - fast moves to 2
+- After fourth iteration:
+- - slow moves to 2
+- - fast moves to 2 (they meet)
+**Result:** Cycle detected (true).
+
+---
+
 ### For Problem 152 
 
 #### Key Idea:
@@ -638,7 +709,7 @@ Let’s walk through the example [2, 3, 2]:
 
 ---
 
-### For Problem 424 - Longest Repeating Character Replacement
+## For Problem 424 - Longest Repeating Character Replacement
 
 I understand your confusion. Let's break it down and walk through the example in more detail. I'll explain the working of the sliding window, `charCount[s[right]]++`, how `maxFreq` works, and why we need `windowSize`.
 
@@ -814,35 +885,10 @@ Let's walk through an example with the string `s = "AABABBA"` and `k = 1`.
 
 This technique efficiently counts the characters and keeps track of the most frequent character to determine if the window is valid based on the allowed number of replacements `k`.
 
----
-
-### Leetcode 141 - Linked List Cycle
-
-**Example 1: [3, 2, 0, -4], pos = 1**
-
-1. **Create the List:**
-- Nodes: 3 -> 2 -> 0 -> -4
-- Create a cycle where -4 points back to 2 (position 1).
-List with cycle: 3 -> 2 -> 0 -> -4 -> 2 -> ...
-2. **Apply Floyd’s Algorithm:**
-- slow starts at 3, fast starts at 3.
-- After first iteration:
-- - slow moves to 2
-- - fast moves to 0
-- After second iteration:
-- - slow moves to 0
-- - fast moves to -4
-- After third iteration:
-- - slow moves to -4
-- - fast moves to 2
-- After fourth iteration:
-- - slow moves to 2
-- - fast moves to 2 (they meet)
-**Result:** Cycle detected (true).
 
 ---
 
-### Leetcode 19 - Remove Nth Node from End of List
+## Leetcode 19 - Remove Nth Node from End of List
 
 **Example: head = [1,2,3,4,5], n = 2**
 
@@ -972,7 +1018,7 @@ To **pop** the stack (remove `'C'`), we do:
 stack = stack[:len(stack)-1]  // Now the stack becomes ['A', 'B']
 ```
 
-### Summary:
+#### Summary:
 
 - **`stack[len(stack)-1]`** is how we access the **top element** of the stack.
 - **`stack[:len(stack)-1]`** is used to **remove** the top element from the stack.
