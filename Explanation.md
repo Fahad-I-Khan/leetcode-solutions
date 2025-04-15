@@ -330,7 +330,232 @@ Let me know if you need further clarification or adjustments!
 
 ---
 
-### For problem 53 Maximum Subarray
+### Leetcode 15 3 Sum
+
+#### Explanation with Example [-1, 0, 1, 2, -1, -4]
+1. Sorting the Array:
+- Sorted array: [-4, -1, -1, 0, 1, 2]
+2. Iterate and Fix One Element:
+- Fix -4 (i=0):
+- - The target sum for the two-pointer search is 4 (0 - (-4)).
+- - Left pointer starts at index 1 (-1), right pointer starts at index 5 (2).
+- - Sum = -4 + (-1) + 2 = -3 (Less than 0, move left pointer to index 2)
+- - Sum = -4 + (-1) + 2 = -3 (Still less, move left pointer to index 3)
+- - Sum = -4 + 0 + 2 = -2 (Still less, move left pointer to index 4)
+- - Sum = -4 + 1 + 2 = -1 (Still less, move left pointer to index 5)
+- - No valid triplet found for -4, move to the next element.
+- Fix -1 (i=1):
+- - The target sum for the two-pointer search is 1 (0 - (-1)).
+- - Left pointer starts at index 2 (-1), right pointer starts at index 5 (2).
+- - Sum = -1 + (-1) + 2 = 0 (Found a triplet [-1, -1, 2])
+- - Skip duplicates for -1 and 2, move both pointers.
+- - Next pointers: Left at index 4 (1), right at index 4 (same, end loop).
+- - Triplet [-1, -1, 2] added.
+- Fix -1 (i=2):
+- - Skip as -1 at index 2 is a duplicate of -1 at index 1.
+- Fix 0 (i=3):
+- - The target sum for the two-pointer search is 0 - 0 = 0.
+- - Left pointer starts at index 4 (1), right pointer starts at index 5 (2).
+- - Sum = 0 + 1 + 2 = 3 (Greater than 0, move right pointer to index 4)
+- - No valid triplet found for 0.
+3. Final Result:
+- The unique triplets that sum up to zero are [-1, -1, 2] and [-1, 0, 1].
+
+---
+
+## Leetcode 19 - Remove Nth Node from End of List
+
+**Example: head = [1,2,3,4,5], n = 2**
+
+1. **Create the List:**
+- head is 1 -> 2 -> 3 -> 4 -> 5
+2. **Initialize Pointers:**
+- dummy points to the head of the list.
+- fast and slow both start at dummy.
+3. **Advance the Fast Pointer:**
+- Move fast n + 1 steps ahead (in this case, 3 steps):
+- - fast moves to 1 (head), then 2, and then 3.
+4. **Move Both Pointers Simultaneously:**
+- Move both fast and slow one step at a time until fast reaches the end of the list:
+- - fast moves to 4, 5, and then nil.
+- - slow moves to 2, 3, and then 4.
+5. **Remove the Node:**
+- slow now points to the node just before the node we want to remove (4 in this case). So, update slow.Next to skip the node 4:
+- slow.Next should point to 5, effectively removing 4.
+6. **Result:**
+- The modified list is: 1 -> 2 -> 3 -> 5
+
+**Function Definition**
+go
+Copy code
+```
+func createList(arr []int) *ListNode {
+    if len(arr) == 0 {
+        return nil
+    }
+    head := &ListNode{Val: arr[0]}
+    current := head
+    for _, val := range arr[1:] {
+        current.Next = &ListNode{Val: val}
+        current = current.Next
+    }
+    return head
+}
+```
+**Code Explanation**
+1. **Check for Empty Array:**
+go
+Copy code
+```
+if len(arr) == 0 {
+    return nil
+}
+```
+- If the input slice arr is empty, the function returns nil, indicating that there is no linked list to create. This is a guard clause to handle edge cases where no nodes should be created.
+2. **Create the Head Node:**
+go
+Copy code
+```
+head := &ListNode{Val: arr[0]}
+```
+- This line creates the first node of the linked list (head) with the value of the first element in the array (arr[0]).
+- head is a pointer to this newly created node.
+3. **Initialize the current Pointer:**
+go
+Copy code
+```
+current := head
+```
+- current is a pointer initialized to head. It will be used to traverse and build the linked list.
+4. **Build the Rest of the List:**
+go
+Copy code
+```
+for _, val := range arr[1:] {
+    current.Next = &ListNode{Val: val}
+    current = current.Next
+}
+```
+- This loop iterates over the rest of the array (arr[1:]), starting from the second element.
+- For each element val in the remaining array, it creates a new ListNode with Val set to val.
+- The Next pointer of the current node is set to point to this new node.
+- The current pointer is then updated to this newly created node, so that the next iteration will append a new node after the current one.
+5. **Return the Head of the List:**
+go
+Copy code
+```
+return head
+```
+- After the loop completes, head points to the first node of the fully constructed linked list.
+- The function returns head, which is the starting point of the linked list.
+
+**Example Usage**
+
+**Given an array arr:**
+go
+Copy code
+```
+arr := []int{1, 2, 3, 4, 5}
+```
+**The createList function will:**
+
+1. Create the head node with value 1.
+2. Create subsequent nodes with values 2, 3, 4, and 5.
+3. Link these nodes together to form the list: 1 -> 2 -> 3 -> 4 -> 5.
+
+---
+
+## For Pronlem 20:
+
+#### A More General Example:
+
+Let’s say we push some elements into the stack:
+
+- Initially, `stack = []`
+- Push `'A'`, then `'B'`, then `'C'`.
+
+After pushing these, the stack will look like this:
+
+```
+stack = ['A', 'B', 'C']
+len(stack) = 3
+```
+
+Now, if we want to access the top element of the stack (i.e., `'C'`), we do:
+
+```
+stack[len(stack)-1]  // This gives us 'C' (the top of the stack)
+```
+
+To **pop** the stack (remove `'C'`), we do:
+
+```
+stack = stack[:len(stack)-1]  // Now the stack becomes ['A', 'B']
+```
+
+#### Summary:
+
+- **`stack[len(stack)-1]`** is how we access the **top element** of the stack.
+- **`stack[:len(stack)-1]`** is used to **remove** the top element from the stack.
+
+---
+
+---
+
+## Leetcode 33 Search in Rotated Sorted Array
+
+#### Explanation with Example [4, 5, 6, 7, 0, 1, 2] and Target 0
+- **Initialization:**
+- - left = 0
+- - right = 6 (length of array - 1)
+
+- **First Iteration:**
+- - mid = (0 + 6) / 2 = 3
+- - nums[mid] = 7
+- - nums[left] <= nums[mid] (4 <= 7): Left part [4, 5, 6, 7] is sorted.
+- - target = 0 is not in the range [4, 7]
+- - Search the right part, so update left = mid + 1 = 4
+
+- **Second Iteration:**
+- - mid = (4 + 6) / 2 = 5
+- - nums[mid] = 1
+- - nums[left] <= nums[mid] (0 <= 1): Left part [0, 1] is sorted.
+- - target = 0 is in the range [0, 1]
+- - Search the left part, so update right = mid - 1 = 4
+
+- **Third Iteration:**
+- - mid = (4 + 4) / 2 = 4
+- - nums[mid] = 0
+- - nums[mid] == target, so return mid = 4
+
+### Find Minimum in Rotated Sorted Array
+
+#### Explanation with Example [3, 4, 5, 1, 2]
+**Initialization:**
+- left = 0
+- right = 4 (last index of the array)
+
+**First Iteration:**
+- mid = (0 + 4) / 2 = 2
+- nums[mid] = 5
+- Compare nums[mid] (5) with nums[right] (2): 5 > 2
+- - Minimum value is in the right part of the array (excluding - mid).
+- - Update left = mid + 1 = 3
+
+**Second Iteration:**
+- mid = (3 + 4) / 2 = 3
+- nums[mid] = 1
+- Compare nums[mid] (1) with nums[right] (2): 1 < 2
+- - Minimum value is in the left part of the array (including mid).
+- - Update right = mid = 3
+
+**Termination:**
+- The loop ends when left equals right (left = right = 3).
+- The minimum value is nums[left], which is 1.
+
+---
+
+## For problem 53 Maximum Subarray
 Solving using Kadane's Algorithm.
 
 #### Example Walkthrough (nums = [-2,1,-3,4,-1,2,1,-5,4]):
@@ -363,8 +588,150 @@ Solving using Kadane's Algorithm.
 
 ---
 
+## Problem 54 - Spiral Matrix
 
-### ✅ LeetCode 136 – **Go Solution**
+1. Initialize Boundaries and Result List
+
+Boundaries:
+top = 0
+bottom = 2
+left = 0
+right = 2
+Result List: [] (Initially empty)
+2. Traverse the Matrix in Spiral Order
+
+**Iteration 1: Move Right along the Top Row (Row 0)**
+
+- **Condition:** top <= bottom (0 ≤ 2) and left <= right (0 ≤ 2)
+- **Action:** Traverse from left (0) to right (2) on the top row (row 0).
+- - **Traverse:**
+- - - Add matrix[0][0] (1) to result
+- - - Add matrix[0][1] (2) to result
+- - - Add matrix[0][2] (3) to result
+**Update:** Increment top from 0 to 1
+**Result:** [1, 2, 3]
+
+**Updated Boundaries:**
+
+- top = 1
+- bottom = 2
+- left = 0
+- right = 2
+
+**Iteration 2: Move Down along the Right Column (Column 2)**
+
+- **Condition:** top <= bottom (1 ≤ 2) and left <= right (0 ≤ 2)
+- **Action:** Traverse from top (1) to bottom (2) on the right column (column 2).
+- - **Traverse:**
+- - - Add matrix[1][2] (6) to result
+- - - Add matrix[2][2] (9) to result
+**Update:** Decrement right from 2 to 1
+**Result:** [1, 2, 3, 6, 9]
+
+**Updated Boundaries:**
+
+- top = 1
+- bottom = 2
+- left = 0
+- right = 1
+
+**Iteration 3: Move Left along the Bottom Row (Row 2)**
+
+- Condition: top <= bottom (1 ≤ 2) and left <= right (0 ≤ 1)
+- Action: Traverse from right (1) to left (0) on the bottom row (row 2).
+- - Traverse:
+- - - Add matrix[2][1] (8) to result
+- - - Add matrix[2][0] (7) to result
+- Update: Decrement bottom from 2 to 1
+- Result: [1, 2, 3, 6, 9, 8, 7]
+
+Updated Boundaries:
+
+- top = 1
+- bottom = 1
+- left = 0
+- right = 1
+
+**Iteration 4: Move Up along the Left Column (Column 0)**
+
+- **Condition:** top <= bottom (1 ≤ 1) and left <= right (0 ≤ 1)
+- **Action:** Traverse from bottom (1) to top (1) on the left column (column 0).
+- - **Traverse:**
+- - - Add matrix[1][0] (4) to result
+- **Update:** Increment left from 0 to 1
+- **Result:** [1, 2, 3, 6, 9, 8, 7, 4]
+
+Updated Boundaries:
+
+- top = 1
+- bottom = 1
+- left = 1
+- right = 1
+
+**Iteration 5: Move Right along the Remaining Top Row (Row 1)**
+
+- **Condition:** top <= bottom (1 ≤ 1) and left <= right (1 ≤ 1)
+- **Action:** Traverse from left (1) to right (1) on the top row (row 1).
+- **Traverse:**
+- - Add matrix[1][1] (5) to result
+- **Update:** Increment top from 1 to 2
+**Result:** [1, 2, 3, 6, 9, 8, 7, 4, 5]
+
+**Updated Boundaries:**
+
+- top = 2
+- bottom = 1
+- left = 2
+- right = 0
+**Termination**
+The loop stops because top > bottom and left > right are no longer valid conditions.
+
+**Final Output**
+The matrix elements in spiral order are: [1, 2, 3, 6, 9, 8, 7, 4, 5].
+
+---
+
+### Leetcode 56 Merge Intervals
+
+#### Explanation with Example [[1, 3], [2, 6], [8, 10], [15, 18]]
+1. Sort the Intervals:
+- The intervals are already sorted by their start values: [[1, 3], [2, 6], [8, 10], [15, 18]].
+2. Merge Intervals:
+- Start with the first interval [1, 3] and initialize it as currentInterval.
+- Process [2, 6]:
+- - Overlaps with [1, 3] because 2 <= 3. Merge them by updating currentInterval to [1, 6] (the maximum end value between 3 and 6).
+- Process [8, 10]:
+- - Does not overlap with [1, 6] because 8 > 6. Add [1, 6] to the result and update currentInterval to [8, 10].
+- Process [15, 18]:
+- - Does not overlap with [8, 10] because 15 > 10. Add [8, 10] to the result and update currentInterval to [15, 18].
+3. Add the Last Interval:
+- Add the last currentInterval [15, 18] to the result.
+4. Result:
+- The merged intervals are [[1, 6], [8, 10], [15, 18]].
+
+---
+
+## Leetcode 57 - Insert Interval
+**Input:**
+- Intervals: [[1, 3], [6, 9]]
+- New Interval: [2, 5]
+**Steps:**
+
+1. Add New Interval:
+- Intervals after adding new interval: [[1, 3], [6, 9], [2, 5]]
+2. Sort the Intervals:
+- After sorting by start times: [[1, 3], [2, 5], [6, 9]]
+3. Merge Intervals:
+- Start with [1, 3] as currentInterval.
+- Compare with [2, 5]: They overlap because 2 <= 3. Merge to form [1, 5].
+- Compare with [6, 9]: No overlap with [1, 5]. Add [1, 5] to the result and update currentInterval to [6, 9].
+- Add the last currentInterval [6, 9] to the result.
+**Result:**
+- Merged Intervals: [[1, 5], [6, 9]]
+
+---
+
+## ✅ LeetCode 136 – **Go Solution**
 
 ```go
 func singleNumber(nums []int) int {
@@ -408,7 +775,7 @@ Final value of `result` = `4` → that’s the number that doesn’t repeat.
 
 ---
 
-### Leetcode 141 - Linked List Cycle
+## Leetcode 141 - Linked List Cycle
 
 **Example 1: [3, 2, 0, -4], pos = 1**
 
@@ -434,7 +801,7 @@ List with cycle: 3 -> 2 -> 0 -> -4 -> 2 -> ...
 
 ---
 
-### For Problem 152 
+## For Problem 152 
 
 #### Key Idea:
 We are trying to find the maximum product of any contiguous subarray in the array. The challenge arises because multiplying negative numbers can flip the sign of the product. So, it's essential to track both the **maximum** and **minimum** product up to the current index.
@@ -560,7 +927,7 @@ Let’s walk through the example [1, 3, 2, 1]:
 #### Result:
 - The result is prev2 = 4
 
-### For problem 213 House Robber 2 
+## For problem 213 House Robber 2 
 
 Let’s walk through the example [2, 3, 2]:
 
@@ -583,131 +950,270 @@ Let’s walk through the example [2, 3, 2]:
 
 ---
 
-### Leetcode 33 Search in Rotated Sorted Array
-
-#### Explanation with Example [4, 5, 6, 7, 0, 1, 2] and Target 0
-- **Initialization:**
-- - left = 0
-- - right = 6 (length of array - 1)
-
-- **First Iteration:**
-- - mid = (0 + 6) / 2 = 3
-- - nums[mid] = 7
-- - nums[left] <= nums[mid] (4 <= 7): Left part [4, 5, 6, 7] is sorted.
-- - target = 0 is not in the range [4, 7]
-- - Search the right part, so update left = mid + 1 = 4
-
-- **Second Iteration:**
-- - mid = (4 + 6) / 2 = 5
-- - nums[mid] = 1
-- - nums[left] <= nums[mid] (0 <= 1): Left part [0, 1] is sorted.
-- - target = 0 is in the range [0, 1]
-- - Search the left part, so update right = mid - 1 = 4
-
-- **Third Iteration:**
-- - mid = (4 + 4) / 2 = 4
-- - nums[mid] = 0
-- - nums[mid] == target, so return mid = 4
-
-### Find Minimum in Rotated Sorted Array
-
-#### Explanation with Example [3, 4, 5, 1, 2]
-**Initialization:**
-- left = 0
-- right = 4 (last index of the array)
-
-**First Iteration:**
-- mid = (0 + 4) / 2 = 2
-- nums[mid] = 5
-- Compare nums[mid] (5) with nums[right] (2): 5 > 2
-- - Minimum value is in the right part of the array (excluding - mid).
-- - Update left = mid + 1 = 3
-
-**Second Iteration:**
-- mid = (3 + 4) / 2 = 3
-- nums[mid] = 1
-- Compare nums[mid] (1) with nums[right] (2): 1 < 2
-- - Minimum value is in the left part of the array (including mid).
-- - Update right = mid = 3
-
-**Termination:**
-- The loop ends when left equals right (left = right = 3).
-- The minimum value is nums[left], which is 1.
+Ahh gotcha! You meant **LeetCode 268 – Missing Number** — no worries at all 😄
 
 ---
 
-### Leetcode 15 3 Sum
+## 🧩 Problem 268: **Missing Number**
 
-#### Explanation with Example [-1, 0, 1, 2, -1, -4]
-1. Sorting the Array:
-- Sorted array: [-4, -1, -1, 0, 1, 2]
-2. Iterate and Fix One Element:
-- Fix -4 (i=0):
-- - The target sum for the two-pointer search is 4 (0 - (-4)).
-- - Left pointer starts at index 1 (-1), right pointer starts at index 5 (2).
-- - Sum = -4 + (-1) + 2 = -3 (Less than 0, move left pointer to index 2)
-- - Sum = -4 + (-1) + 2 = -3 (Still less, move left pointer to index 3)
-- - Sum = -4 + 0 + 2 = -2 (Still less, move left pointer to index 4)
-- - Sum = -4 + 1 + 2 = -1 (Still less, move left pointer to index 5)
-- - No valid triplet found for -4, move to the next element.
-- Fix -1 (i=1):
-- - The target sum for the two-pointer search is 1 (0 - (-1)).
-- - Left pointer starts at index 2 (-1), right pointer starts at index 5 (2).
-- - Sum = -1 + (-1) + 2 = 0 (Found a triplet [-1, -1, 2])
-- - Skip duplicates for -1 and 2, move both pointers.
-- - Next pointers: Left at index 4 (1), right at index 4 (same, end loop).
-- - Triplet [-1, -1, 2] added.
-- Fix -1 (i=2):
-- - Skip as -1 at index 2 is a duplicate of -1 at index 1.
-- Fix 0 (i=3):
-- - The target sum for the two-pointer search is 0 - 0 = 0.
-- - Left pointer starts at index 4 (1), right pointer starts at index 5 (2).
-- - Sum = 0 + 1 + 2 = 3 (Greater than 0, move right pointer to index 4)
-- - No valid triplet found for 0.
-3. Final Result:
-- The unique triplets that sum up to zero are [-1, -1, 2] and [-1, 0, 1].
+#### 🔗 Problem Statement:
+You're given an array containing **`n` distinct numbers** taken from the range `0` to `n`.
+
+> Find the **one number** that is missing from the array.
 
 ---
 
-### Leetcode 56 Merge Intervals
+### ✅ Example:
 
-#### Explanation with Example [[1, 3], [2, 6], [8, 10], [15, 18]]
-1. Sort the Intervals:
-- The intervals are already sorted by their start values: [[1, 3], [2, 6], [8, 10], [15, 18]].
-2. Merge Intervals:
-- Start with the first interval [1, 3] and initialize it as currentInterval.
-- Process [2, 6]:
-- - Overlaps with [1, 3] because 2 <= 3. Merge them by updating currentInterval to [1, 6] (the maximum end value between 3 and 6).
-- Process [8, 10]:
-- - Does not overlap with [1, 6] because 8 > 6. Add [1, 6] to the result and update currentInterval to [8, 10].
-- Process [15, 18]:
-- - Does not overlap with [8, 10] because 15 > 10. Add [8, 10] to the result and update currentInterval to [15, 18].
-3. Add the Last Interval:
-- Add the last currentInterval [15, 18] to the result.
-4. Result:
-- The merged intervals are [[1, 6], [8, 10], [15, 18]].
+```go
+Input: [3, 0, 1]
+Output: 2
+
+Input: [0, 1]
+Output: 2
+
+Input: [9,6,4,2,3,5,7,0,1]
+Output: 8
+```
 
 ---
 
-### Leetcode 57 - Insert Interval
-**Input:**
-- Intervals: [[1, 3], [6, 9]]
-- New Interval: [2, 5]
-**Steps:**
-
-1. Add New Interval:
-- Intervals after adding new interval: [[1, 3], [6, 9], [2, 5]]
-2. Sort the Intervals:
-- After sorting by start times: [[1, 3], [2, 5], [6, 9]]
-3. Merge Intervals:
-- Start with [1, 3] as currentInterval.
-- Compare with [2, 5]: They overlap because 2 <= 3. Merge to form [1, 5].
-- Compare with [6, 9]: No overlap with [1, 5]. Add [1, 5] to the result and update currentInterval to [6, 9].
-- Add the last currentInterval [6, 9] to the result.
-**Result:**
-- Merged Intervals: [[1, 5], [6, 9]]
+### ⏱ Constraints:
+- Must run in **O(n)** time
+- Use **O(1)** extra space
 
 ---
+
+### 🔥 Best Solution: **Sum Formula**
+
+The **sum of numbers from 0 to n** is:
+```
+n * (n + 1) / 2
+```
+
+If we subtract the **actual sum** of the array from the **expected sum**, we get the missing number.
+
+---
+
+### 🧠 Go Code:
+
+```go
+func missingNumber(nums []int) int {
+    n := len(nums)
+    expectedSum := n * (n + 1) / 2
+    actualSum := 0
+    for _, num := range nums {
+        actualSum += num
+    }
+    return expectedSum - actualSum
+}
+```
+
+---
+
+### 💡 Example Walkthrough: `[3, 0, 1]`
+
+- `n = 3`
+- Expected sum: `3 * (3 + 1) / 2 = 6`
+- Actual sum: `3 + 0 + 1 = 4`
+- Missing number: `6 - 4 = 2`
+
+✅ So the output is `2`
+
+---
+
+Want me to show a **bitwise XOR** version too? That works like magic for this problem 🔮
+
+The **formula:**
+
+```go
+expectedSum := n * (n + 1) / 2
+```
+
+👆 This **only works** **if** the numbers go from `0` to `n`, like:
+
+```
+[0, 1, 2, ..., n]  → total of (n + 1) numbers
+```
+
+It works because it’s based on the formula for the **sum of the first n natural numbers starting from 0**.
+
+---
+
+### 😬 What If They Start from 1?
+
+If your array is like:
+
+```go
+nums := []int{1, 2, 3, 4, 6}
+```
+
+Now the numbers go from `1` to `n`, and **0 is not included**.  
+⚠️ In this case, the formula **won’t work** unless you adjust it.
+
+---
+
+### ✅ What to Do Then?
+
+You have **two options**:
+
+---
+
+### Option 1: Adjust the Formula
+
+If your numbers go from **1 to n**, and one number is missing:
+
+```go
+expectedSum := (n + 1) * (n + 2) / 2
+```
+
+Here, `n = len(nums)`  
+We add +1 because we're **missing one number**
+
+---
+
+#### Example:
+```go
+nums := []int{1, 2, 3, 5}
+```
+
+- `n = 4` (length)
+- We expect numbers from `1 to 5`
+- So expectedSum = (4 + 1) * (4 + 2) / 2 = 5 * 6 / 2 = 15
+- actualSum = 1 + 2 + 3 + 5 = 11
+- missing = 15 - 11 = **4** ✅
+
+---
+
+### Option 2: Don’t Use the Formula — Use XOR 😎
+
+XOR works no matter what the numbers are, as long as you XOR with the expected range.
+
+---
+
+### TL;DR:
+
+| Case                  | Formula                        |
+|-----------------------|--------------------------------|
+| Numbers from `0 to n` | `n * (n + 1) / 2`              |
+| Numbers from `1 to n` | `(n + 1) * (n + 2) / 2`        |
+
+---
+
+Wanna try adjusting the formula for a custom test case? I can help you test if it works ✅
+
+### How to solve with XOR method 
+
+```go
+func missingNumber(nums []int) int {
+    xorAll := 0
+    n := len(nums)
+
+    for i := 0; i <= n; i++ {
+        xorAll ^= i
+    }
+    for _, num := range nums {
+        xorAll ^= num
+    }
+
+    return xorAll
+}
+```
+
+Ahhh yes — now *that’s* a 🔥 follow-up question! You're absolutely right to call this out.
+
+---
+
+### 🧠 Situation Shift:
+Now the array contains **numbers from `1` to `n`**, and one is missing.
+
+So the range is:
+```
+[1, 2, ..., n]
+```
+Instead of:
+```
+[0, 1, ..., n]
+```
+
+---
+
+### 🤔 Problem: Can XOR still work here?
+
+Well… **sort of**, but we need to adjust our approach.
+
+The default XOR method assumes the range is `[0..n]`. So if the problem defines the range as `[1..n]`, we must modify how we XOR.
+
+---
+
+### 🛠️ Solution Using XOR for Range [1..n]
+
+### Step-by-step:
+
+1. XOR all numbers from `1` to `n` (instead of `0` to `n`)
+2. XOR all elements in the input array
+3. XOR the two results — the missing number pops out
+
+---
+
+### ✅ Example Input:
+```go
+nums := []int{1, 2, 4, 5} // n = 5, missing 3
+```
+
+---
+
+### ✅ Go Code for XOR [1..n]:
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func missingNumber(nums []int) int {
+	n := len(nums) + 1 // because one is missing
+	xorFull := 0
+	xorNums := 0
+
+	for i := 1; i <= n; i++ {
+		xorFull ^= i
+	}
+
+	for _, num := range nums {
+		xorNums ^= num
+	}
+
+	return xorFull ^ xorNums
+}
+
+func main() {
+	nums := []int{1, 2, 4, 5}
+	fmt.Println("Missing number is:", missingNumber(nums)) // Should print 3
+}
+```
+
+---
+
+### 🧪 Breakdown:
+- `xorFull = 1 ^ 2 ^ 3 ^ 4 ^ 5`
+- `xorNums = 1 ^ 2 ^ 4 ^ 5`
+- Result: `xorFull ^ xorNums = 3`
+
+---
+
+### 💡 Summary:
+
+| Range Type  | How to XOR           | Notes                             |
+|-------------|----------------------|------------------------------------|
+| `[0..n]`     | XOR from 0 to n       | Standard LeetCode 268             |
+| `[1..n]`     | XOR from 1 to n       | Just shift the range accordingly  |
+
+---
+
+You’ve got a really solid eye for edge cases and spec changes 👏  
+Want me to show how to turn this into a generic function that handles both `[0..n]` and `[1..n]` based on a flag?
 
 ## For Problem 424 - Longest Repeating Character Replacement
 
@@ -887,247 +1393,6 @@ This technique efficiently counts the characters and keeps track of the most fre
 
 
 ---
-
-## Leetcode 19 - Remove Nth Node from End of List
-
-**Example: head = [1,2,3,4,5], n = 2**
-
-1. **Create the List:**
-- head is 1 -> 2 -> 3 -> 4 -> 5
-2. **Initialize Pointers:**
-- dummy points to the head of the list.
-- fast and slow both start at dummy.
-3. **Advance the Fast Pointer:**
-- Move fast n + 1 steps ahead (in this case, 3 steps):
-- - fast moves to 1 (head), then 2, and then 3.
-4. **Move Both Pointers Simultaneously:**
-- Move both fast and slow one step at a time until fast reaches the end of the list:
-- - fast moves to 4, 5, and then nil.
-- - slow moves to 2, 3, and then 4.
-5. **Remove the Node:**
-- slow now points to the node just before the node we want to remove (4 in this case). So, update slow.Next to skip the node 4:
-- slow.Next should point to 5, effectively removing 4.
-6. **Result:**
-- The modified list is: 1 -> 2 -> 3 -> 5
-
-**Function Definition**
-go
-Copy code
-```
-func createList(arr []int) *ListNode {
-    if len(arr) == 0 {
-        return nil
-    }
-    head := &ListNode{Val: arr[0]}
-    current := head
-    for _, val := range arr[1:] {
-        current.Next = &ListNode{Val: val}
-        current = current.Next
-    }
-    return head
-}
-```
-**Code Explanation**
-1. **Check for Empty Array:**
-go
-Copy code
-```
-if len(arr) == 0 {
-    return nil
-}
-```
-- If the input slice arr is empty, the function returns nil, indicating that there is no linked list to create. This is a guard clause to handle edge cases where no nodes should be created.
-2. **Create the Head Node:**
-go
-Copy code
-```
-head := &ListNode{Val: arr[0]}
-```
-- This line creates the first node of the linked list (head) with the value of the first element in the array (arr[0]).
-- head is a pointer to this newly created node.
-3. **Initialize the current Pointer:**
-go
-Copy code
-```
-current := head
-```
-- current is a pointer initialized to head. It will be used to traverse and build the linked list.
-4. **Build the Rest of the List:**
-go
-Copy code
-```
-for _, val := range arr[1:] {
-    current.Next = &ListNode{Val: val}
-    current = current.Next
-}
-```
-- This loop iterates over the rest of the array (arr[1:]), starting from the second element.
-- For each element val in the remaining array, it creates a new ListNode with Val set to val.
-- The Next pointer of the current node is set to point to this new node.
-- The current pointer is then updated to this newly created node, so that the next iteration will append a new node after the current one.
-5. **Return the Head of the List:**
-go
-Copy code
-```
-return head
-```
-- After the loop completes, head points to the first node of the fully constructed linked list.
-- The function returns head, which is the starting point of the linked list.
-
-**Example Usage**
-
-**Given an array arr:**
-go
-Copy code
-```
-arr := []int{1, 2, 3, 4, 5}
-```
-**The createList function will:**
-
-1. Create the head node with value 1.
-2. Create subsequent nodes with values 2, 3, 4, and 5.
-3. Link these nodes together to form the list: 1 -> 2 -> 3 -> 4 -> 5.
-
----
-
-### For Pronlem 20:
-
-#### A More General Example:
-
-Let’s say we push some elements into the stack:
-
-- Initially, `stack = []`
-- Push `'A'`, then `'B'`, then `'C'`.
-
-After pushing these, the stack will look like this:
-
-```
-stack = ['A', 'B', 'C']
-len(stack) = 3
-```
-
-Now, if we want to access the top element of the stack (i.e., `'C'`), we do:
-
-```
-stack[len(stack)-1]  // This gives us 'C' (the top of the stack)
-```
-
-To **pop** the stack (remove `'C'`), we do:
-
-```
-stack = stack[:len(stack)-1]  // Now the stack becomes ['A', 'B']
-```
-
-#### Summary:
-
-- **`stack[len(stack)-1]`** is how we access the **top element** of the stack.
-- **`stack[:len(stack)-1]`** is used to **remove** the top element from the stack.
-
----
-
-### Problem 54 - Spiral Matrix
-
-1. Initialize Boundaries and Result List
-
-Boundaries:
-top = 0
-bottom = 2
-left = 0
-right = 2
-Result List: [] (Initially empty)
-2. Traverse the Matrix in Spiral Order
-
-**Iteration 1: Move Right along the Top Row (Row 0)**
-
-- **Condition:** top <= bottom (0 ≤ 2) and left <= right (0 ≤ 2)
-- **Action:** Traverse from left (0) to right (2) on the top row (row 0).
-- - **Traverse:**
-- - - Add matrix[0][0] (1) to result
-- - - Add matrix[0][1] (2) to result
-- - - Add matrix[0][2] (3) to result
-**Update:** Increment top from 0 to 1
-**Result:** [1, 2, 3]
-
-**Updated Boundaries:**
-
-- top = 1
-- bottom = 2
-- left = 0
-- right = 2
-
-**Iteration 2: Move Down along the Right Column (Column 2)**
-
-- **Condition:** top <= bottom (1 ≤ 2) and left <= right (0 ≤ 2)
-- **Action:** Traverse from top (1) to bottom (2) on the right column (column 2).
-- - **Traverse:**
-- - - Add matrix[1][2] (6) to result
-- - - Add matrix[2][2] (9) to result
-**Update:** Decrement right from 2 to 1
-**Result:** [1, 2, 3, 6, 9]
-
-**Updated Boundaries:**
-
-- top = 1
-- bottom = 2
-- left = 0
-- right = 1
-
-**Iteration 3: Move Left along the Bottom Row (Row 2)**
-
-- Condition: top <= bottom (1 ≤ 2) and left <= right (0 ≤ 1)
-- Action: Traverse from right (1) to left (0) on the bottom row (row 2).
-- - Traverse:
-- - - Add matrix[2][1] (8) to result
-- - - Add matrix[2][0] (7) to result
-- Update: Decrement bottom from 2 to 1
-- Result: [1, 2, 3, 6, 9, 8, 7]
-
-Updated Boundaries:
-
-- top = 1
-- bottom = 1
-- left = 0
-- right = 1
-
-**Iteration 4: Move Up along the Left Column (Column 0)**
-
-- **Condition:** top <= bottom (1 ≤ 1) and left <= right (0 ≤ 1)
-- **Action:** Traverse from bottom (1) to top (1) on the left column (column 0).
-- - **Traverse:**
-- - - Add matrix[1][0] (4) to result
-- **Update:** Increment left from 0 to 1
-- **Result:** [1, 2, 3, 6, 9, 8, 7, 4]
-
-Updated Boundaries:
-
-- top = 1
-- bottom = 1
-- left = 1
-- right = 1
-
-**Iteration 5: Move Right along the Remaining Top Row (Row 1)**
-
-- **Condition:** top <= bottom (1 ≤ 1) and left <= right (1 ≤ 1)
-- **Action:** Traverse from left (1) to right (1) on the top row (row 1).
-- **Traverse:**
-- - Add matrix[1][1] (5) to result
-- **Update:** Increment top from 1 to 2
-**Result:** [1, 2, 3, 6, 9, 8, 7, 4, 5]
-
-**Updated Boundaries:**
-
-- top = 2
-- bottom = 1
-- left = 2
-- right = 0
-**Termination**
-The loop stops because top > bottom and left > right are no longer valid conditions.
-
-**Final Output**
-The matrix elements in spiral order are: [1, 2, 3, 6, 9, 8, 7, 4, 5].
-
----
-
 
 ### Leetcode 206 - 
 
