@@ -500,6 +500,71 @@ stack = stack[:len(stack)-1]  // Now the stack becomes ['A', 'B']
 
 ---
 
+## Problem 26 :- Remove Duplicates from Sorted Array
+
+Absolutely! 🙌 Let’s **visually walk through the two-pointer solution step-by-step** — aka the **traversal (dry run)** — so you can really see how it works.
+
+---
+
+### 📌 Code Recap:
+```go
+func removeDuplicates(nums []int) int {
+    if len(nums) == 0 {
+        return 0
+    }
+
+    i := 0
+    for j := 1; j < len(nums); j++ {
+        if nums[j] != nums[i] {
+            i++
+            nums[i] = nums[j]
+        }
+    }
+
+    return i + 1
+}
+```
+
+---
+
+### 🧪 Example Input:
+
+```go
+nums := []int{1, 1, 2, 2, 3}
+```
+
+---
+
+### 🧭 Step-by-Step Traversal:
+
+| Step | `i` | `j` | `nums[i]` | `nums[j]` | Comparison    | Action                      | Resulting `nums`           |
+|------|-----|-----|-----------|-----------|----------------|-----------------------------|----------------------------|
+| 1    | 0   | 1   | 1         | 1         | 1 == 1         | No change, skip             | [1, 1, 2, 2, 3]            |
+| 2    | 0   | 2   | 1         | 2         | 1 ≠ 2          | `i++`, `nums[i] = nums[j]`  | [1, 2, 2, 2, 3]            |
+| 3    | 1   | 3   | 2         | 2         | 2 == 2         | No change, skip             | [1, 2, 2, 2, 3]            |
+| 4    | 1   | 4   | 2         | 3         | 2 ≠ 3          | `i++`, `nums[i] = nums[j]`  | [1, 2, 3, 2, 3]            |
+
+---
+
+### ✅ Final Result:
+
+- `i = 2`, so return `i + 1 = 3`
+- First `3` elements of `nums`: **`[1, 2, 3]`**
+- Remaining values in the array are ignored
+
+---
+
+### 💡 TL;DR:
+
+- **i** tracks the position where the next unique value should go.
+- **j** scans ahead to find new unique values.
+- When a new unique value is found, copy it to the front.
+
+---
+
+Would you like to see this drawn as a timeline or diagram in Go-style comments? I can drop that too!
+That timeline/diagram is in folder :- Problem 26
+
 ---
 
 ## Leetcode 33 Search in Rotated Sorted Array
