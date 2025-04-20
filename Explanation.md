@@ -565,6 +565,48 @@ nums := []int{1, 1, 2, 2, 3}
 Would you like to see this drawn as a timeline or diagram in Go-style comments? I can drop that too!
 That timeline/diagram is in folder :- Problem 26
 
+### How I try to solve 
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	slice := []int{1, 1, 1, 2, 2, 3}
+
+	for i := 0; i < len(slice)-1; {
+		if slice[i] == slice[i+1] {
+			indexToRemove := i
+			slice = append(slice[:indexToRemove], slice[indexToRemove+1:]...)
+		} else {
+			i++
+		}
+	}
+	fmt.Println("After append:", slice)
+
+	// Append
+	// slice = append(slice, 7)
+	// fmt.Println("After append:", slice)
+}
+```
+
+### Optional: If You Really Want to Remove In-Place with a Loop
+
+```go
+func removeDuplicates(nums []int) int {
+    for i := 0; i < len(nums)-1; {
+        if nums[i] == nums[i+1] {
+            nums = append(nums[:i+1], nums[i+2:]...) // remove one duplicate
+        } else {
+            i++ // only advance if no removal
+        }
+    }
+    return len(nums)
+}
+```
+**⚠️ Note**: This works but is not LeetCode's preferred method — they expect you to avoid changing the slice length and instead modify in-place.
+
 ---
 
 ## Leetcode 33 Search in Rotated Sorted Array
@@ -793,6 +835,103 @@ The matrix elements in spiral order are: [1, 2, 3, 6, 9, 8, 7, 4, 5].
 - Add the last currentInterval [6, 9] to the result.
 **Result:**
 - Merged Intervals: [[1, 5], [6, 9]]
+
+---
+
+Let's do it! 🔥 You're on a roll.
+
+---
+
+## 🔢 LeetCode 80: **Remove Duplicates from Sorted Array II**
+
+### 🧩 Problem Summary:
+
+Given a **sorted array**, remove the **extra duplicates** **in-place**, allowing at most **two occurrences of each element**.
+
+You must:
+- Modify the array **in-place**
+- Return the new length (`int`) of the updated array
+- Use **O(1) extra memory**
+
+---
+
+### 📌 Example:
+
+```go
+Input:  nums = [1,1,1,2,2,3]
+Output: [1,1,2,2,3]
+Return: 5
+```
+
+> Each element can appear **at most twice**. The third `1` is removed.
+
+---
+
+## ✅ Intuition (Two Pointers):
+
+This is a twist on LeetCode 26.
+
+We allow **up to 2 of each element**, so instead of comparing `nums[i] != nums[j]`, we now compare:
+
+> `nums[j] != nums[i - 2]`
+
+That means: current value `nums[j]` is allowed only if it's different from the number we stored **two positions back**.
+
+---
+
+## ✅ Go Code for LeetCode 80
+
+```go
+func removeDuplicates(nums []int) int {
+    n := len(nums)
+    if n <= 2 {
+        return n // already valid
+    }
+
+    i := 2 // start from index 2
+
+    for j := 2; j < n; j++ {
+        if nums[j] != nums[i-2] {
+            nums[i] = nums[j]
+            i++
+        }
+    }
+
+    return i
+}
+```
+
+---
+
+### 🧪 Dry Run Example: `[1,1,1,2,2,3]`
+
+| `i` | `j` | `nums[i-2]` | `nums[j]` | Comparison | Action               | Array                       |
+|-----|-----|-------------|-----------|------------|-----------------------|-----------------------------|
+| 2   | 2   | 1           | 1         | 1 == 1     | skip (3rd duplicate) | [1, 1, 1, 2, 2, 3]          |
+| 2   | 3   | 1           | 2         | 1 ≠ 2      | write 2 to nums[2]   | [1, 1, 2, 2, 2, 3]          |
+| 3   | 4   | 1           | 2         | 1 ≠ 2      | write 2 to nums[3]   | [1, 1, 2, 2, 2, 3]          |
+| 4   | 5   | 2           | 3         | 2 ≠ 3      | write 3 to nums[4]   | [1, 1, 2, 2, 3, 3]          |
+
+### ✅ Result: `i = 5`
+- New array: `[1, 1, 2, 2, 3]`
+- Return: `5`
+
+---
+
+### 🧠 Time and Space:
+- **Time**: O(n)
+- **Space**: O(1) — in-place
+
+---
+
+Want a timeline diagram of this too, like last time? Or want to try an extended version (allow at most 3 duplicates)?
+
+### 🧩 Generic Formula:
+
+> To allow **up to `k` duplicates**,  
+> start with `i = k`, and  
+> use `nums[j] != nums[i-k]` inside the loop
+
 
 ---
 
