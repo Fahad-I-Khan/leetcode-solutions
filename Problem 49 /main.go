@@ -36,8 +36,30 @@ func groupAnagrams(strs []string) [][]string {
     return result
 }
 
+func groupAnagrams2(strs []string) [][]string {
+    m := make(map[[26]int][]string)
+
+    for _, word := range strs {
+        var count [26]int
+        for _, ch := range word {
+            count[ch-'a']++
+        }
+        m[count] = append(m[count], word)
+    }
+
+    result := [][]string{}
+    for _, group := range m {
+        result = append(result, group)
+    }
+
+    return result
+}
+
+
 func main() {
     strs := []string{"eat", "tea", "tan", "ate", "nat", "bat"}
     result := groupAnagrams(strs)
+    result2 := groupAnagrams2(strs)
     fmt.Println(result) // Output: [["eat" "tea" "ate"] ["tan" "nat"] ["bat"]]
+    fmt.Println(result2)
 }
